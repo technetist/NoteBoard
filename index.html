@@ -30,6 +30,8 @@
                 <label for="message">Message</label>
                 <textarea class="form-control" id="message" v-model="note.message"></textarea>
             </div>
+            <button class="btn btn-primary"
+            @click="addNote">Submit</button>
         </div>
     </div>
 
@@ -41,6 +43,23 @@
                 note: {
                     title: '',
                     message: ''
+                },
+                notes: [
+                    {
+                        title: 'Teddy is Awesome!',
+                        message: 'My cat is so cute.',
+                        date: new Date(Date.now()).toLocaleString()
+                    }
+                ]
+            },
+            methods: {
+                addNote() {
+                    let { text, title } = this.note
+                    this.notes.push({
+                        text,
+                        title,
+                        date: new Date(Date.now()).toLocaleString()
+                    })
                 }
             }
         })
