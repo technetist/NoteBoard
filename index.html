@@ -12,11 +12,17 @@
     <title>NoteBoard</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
+          href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     <link rel="stylesheet"
           href="http://davidtkatz.com/public_css/noteMaster.css">
+    <style>
+        .bg-primary > .card-block > .text-muted {
+            color: #C0C0C0;
+        }
+        .te
+    </style>
 </head>
 <body>
     <div id="app">
@@ -35,14 +41,46 @@
                           id="message"
                           v-model="note.message"></textarea>
             </div>
+            <div class="form-group row">
+                <div>
+                <label class="col-xs-4"
+                       for="colorSelect">Color select</label>
+                <select v-model="note.color"
+                        class="selectpicker col-xs-3 col-sm-2 col-md-1"
+                        id="colorSelect">
+                    <option value="default"
+                            data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-light'> </span>">
+                        White
+                    </option>
+                    <option value="red"
+                            data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-danger'> </span>">
+                        White
+                    </option>
+                    <option value="green"
+                            data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-success'> </span>">
+                        Green
+                    </option>
+                    <option value="blue"
+                            data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-primary'> </span>">
+                        White
+                    </option>
+                </select>
+                </div>
+            </div>
             <button class="btn btn-primary"
             @click="addNote">Submit</button>
         </div>
         <div class="col-sm-12">
             <div class="col-sm-4 note" v-for="(note, index) in notes">
-                <div class="card">
+                <div class="card" v-bind:class="{
+                    'text-white bg-primary': note.color === 'blue',
+                    'text-white bg-danger': note.color === 'red',
+                    'text-white bg-success': note.color === 'green',
+                    'text-black bg-light': note.color === 'default'
+                }">
                     <div class="card-block">
-                        <button class="close" name="button" @click="removeNote(index)">&times;</button>
+                        <button class="close" name="button"
+                                @click="removeNote(index)">&times;</button>
                         <h4 class="card-title">{{note.title}}</h4>
                         <h6 class="card-subtitle mb-2 text-muted">
                             {{ note.date }}
@@ -61,23 +99,26 @@
                 title: 'NoteBoard',
                 note: {
                     title: '',
-                    message: ''
+                    message: '',
+                    color: ''
                 },
                 notes: [
                     {
                         title: 'Teddy is Awesome!',
                         message: 'My cat is so cute.',
-                        date: new Date(Date.now()).toLocaleString()
+                        date: new Date(Date.now()).toLocaleString(),
+                        color: 'blue'
                     }
                 ]
             },
             methods: {
                 addNote() {
-                    let { message, title } = this.note
+                    let { message, title, color } = this.note
                     this.notes.push({
                         message,
                         title,
-                        date: new Date(Date.now()).toLocaleString()
+                        date: new Date(Date.now()).toLocaleString(),
+                        color
                     })
                 },
                 removeNote(index) {
@@ -86,5 +127,14 @@
             }
         })
     </script>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            crossorigin="anonymous"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js">
+
+    </script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 </body>
 </html>
