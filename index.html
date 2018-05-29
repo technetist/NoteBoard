@@ -11,6 +11,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>NoteBoard</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script
+            src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js">
+    </script>
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet"
@@ -102,14 +105,7 @@
                     message: '',
                     color: ''
                 },
-                notes: [
-                    {
-                        title: 'Teddy is Awesome!',
-                        message: 'My cat is so cute.',
-                        date: new Date(Date.now()).toLocaleString(),
-                        color: 'blue'
-                    }
-                ]
+                notes: Cookies.getJSON('notebookNotes'),
             },
             methods: {
                 addNote() {
@@ -119,10 +115,25 @@
                         title,
                         date: new Date(Date.now()).toLocaleString(),
                         color
-                    })
+                    });
+                    Cookies.set('notebookNotes',this.notes);
                 },
                 removeNote(index) {
                     this.notes.splice(index, 1)
+                    Cookies.set('notebookNotes',this.notes);
+                }
+            },
+            created: function () {
+                if(Cookies.get('notebookNotes') === 'undefined'
+                    || !Cookies.get('notebookNotes')) {
+                    this.notes = [{
+                        title: 'My Cat Is Awesome',
+                        message: 'Teddy is a cool cat.',
+                        color: 'blue',
+                        rank: 1,
+                        date: new Date().toLocaleString()
+                    }];
+                    Cookies.set('notebookNotes', this.notes)
                 }
             }
         })
@@ -135,6 +146,7 @@
 
     </script>
     <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js">
+    </script>
 </body>
 </html>
