@@ -118,26 +118,34 @@
                     </option>
                 </select>
             </div>
-            <button class="btn btn-primary"
-            @click="addNote">Submit</button>
+            <div class="form-group text-center">
+                <button class="btn btn-primary"
+                        @click="addNote">Submit</button>
+            </div>
         </div>
-        <button class="btn btn-primary" v-on:click='sortNotes()'>{{ sortButton.text }}</button>
-        <div class="col-sm-12">
-            <div class="col-sm-4 note" v-for="(note, index) in notes">
-                <div class="card" v-bind:class="{
-                    'text-white bg-primary': note.color === 'blue',
-                    'text-white bg-danger': note.color === 'red',
-                    'text-white bg-success': note.color === 'green',
-                    'text-black bg-light': note.color === 'default'
-                }">
-                    <div class="card-block">
-                        <button class="close" name="button"
-                                @click="removeNote(index)">&times;</button>
-                        <h4 class="card-title">{{note.title}} <span class="label label-pill label-info">{{note.rank}}</span></h4>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            {{ note.date }}
-                        </h6>
-                        <p class="card-text">{{ note.message }}</p>
+        <div class="row">
+            <div class="col-xs-3 col-sm-offset-9 col-xs-offset-7">
+                <button class="btn btn-primary" v-on:click='sortNotes()'>{{ sortButton.text }}</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-4 note" v-for="(note, index) in notes">
+                    <div class="card" v-bind:class="{
+                        'text-white bg-primary': note.color === 'blue',
+                        'text-white bg-danger': note.color === 'red',
+                        'text-white bg-success': note.color === 'green',
+                        'text-black bg-light': note.color === 'default'
+                    }">
+                        <div class="card-block">
+                            <button class="close" name="button"
+                                    @click="removeNote(index)">&times;</button>
+                            <h4 class="card-title">{{note.title}} <span class="label label-pill label-info">{{note.rank}}</span></h4>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                {{ note.date }}
+                            </h6>
+                            <p class="card-text">{{ note.message }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
