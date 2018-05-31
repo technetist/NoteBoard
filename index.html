@@ -46,33 +46,82 @@
             </div>
             <div class="form-group row">
                 <div>
-                <label class="col-xs-4"
-                       for="colorSelect">Color select</label>
-                <select v-model="note.color"
-                        class="selectpicker col-xs-3 col-sm-2 col-md-1"
-                        id="colorSelect">
-                    <option value="default"
-                            data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-light'> </span>">
-                        White
+                    <label class="col-xs-4"
+                           for="colorSelect">Color select</label>
+                    <select v-model="note.color"
+                            class="selectpicker col-xs-3 col-sm-2 col-md-1"
+                            id="colorSelect">
+                        <option value="default"
+                                data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-light'> </span>"
+                                selected>
+                            White
+                        </option>
+                        <option value="red"
+                                data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-danger'> </span>">
+                            White
+                        </option>
+                        <option value="green"
+                                data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-success'> </span>">
+                            Green
+                        </option>
+                        <option value="blue"
+                                data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-primary'> </span>">
+                            White
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ranking">Importance</label>
+                <select v-model="note.rank"
+                        id="ranking">
+                    <option value="1"
+                            data-content="1"
+                            selected>
+                        1
                     </option>
-                    <option value="red"
-                            data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-danger'> </span>">
-                        White
+                    <option value="2"
+                            data-content="2">
+                        2
                     </option>
-                    <option value="green"
-                            data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-success'> </span>">
-                        Green
+                    <option value="3"
+                            data-content="3">
+                        3
                     </option>
-                    <option value="blue"
-                            data-content="<span style='display: block; height: 20px; width: 20px;'class='label label-primary'> </span>">
-                        White
+                    <option value="4"
+                            data-content="4">
+                        4
+                    </option>
+                    <option value="5"
+                            data-content="5">
+                        5
+                    </option>
+                    <option value="6"
+                            data-content="6">
+                        6
+                    </option>
+                    <option value="7"
+                            data-content="7">
+                        7
+                    </option>
+                    <option value="8"
+                            data-content="8">
+                        8
+                    </option>
+                    <option value="9"
+                            data-content="9">
+                        9
+                    </option>
+                    <option value="10"
+                            data-content="10">
+                        10
                     </option>
                 </select>
-                </div>
             </div>
             <button class="btn btn-primary"
             @click="addNote">Submit</button>
         </div>
+        <button class="btn btn-primary" v-on:click='sortNotes()'>{{ sortButton.text }}</button>
         <div class="col-sm-12">
             <div class="col-sm-4 note" v-for="(note, index) in notes">
                 <div class="card" v-bind:class="{
@@ -84,7 +133,7 @@
                     <div class="card-block">
                         <button class="close" name="button"
                                 @click="removeNote(index)">&times;</button>
-                        <h4 class="card-title">{{note.title}}</h4>
+                        <h4 class="card-title">{{note.title}} <span class="label label-pill label-info">{{note.rank}}</span></h4>
                         <h6 class="card-subtitle mb-2 text-muted">
                             {{ note.date }}
                         </h6>
@@ -99,28 +148,50 @@
         let app = new Vue({
             el: '#app',
             data: {
+                sortToggle: false,
                 title: 'NoteBoard',
+                sortButton: {
+                    text: 'Sort Ascending'
+                },
                 note: {
                     title: '',
                     message: '',
-                    color: ''
+                    color: '',
+                    rank: ''
                 },
                 notes: Cookies.getJSON('notebookNotes'),
             },
             methods: {
                 addNote() {
-                    let { message, title, color } = this.note
+                    let { message, title, color, rank } = this.note
                     this.notes.push({
                         message,
                         title,
                         date: new Date(Date.now()).toLocaleString(),
-                        color
+                        color,
+                        rank
                     });
                     Cookies.set('notebookNotes',this.notes);
                 },
                 removeNote(index) {
                     this.notes.splice(index, 1)
                     Cookies.set('notebookNotes',this.notes);
+                },
+                sortNotes() {
+                    if(!this.sortToggle) {
+                        this.sortToggle = !this.sortToggle;
+                        this.sortButton.text = "Sort Descending";
+                        return this.notes.sort((a, b) => a.rank - b.rank)
+
+                    } else if(this.sortToggle) {
+                        this.sortToggle = !this.sortToggle;
+                        this.sortButton.text = "Sort Ascending";
+                        return this.notes.sort((a, b) => b.rank - a.rank)
+                    }
+                }
+            },
+            computed: {
+                sortedNotes: function() {
                 }
             },
             created: function () {
@@ -130,7 +201,7 @@
                         title: 'My Cat Is Awesome',
                         message: 'Teddy is a cool cat.',
                         color: 'blue',
-                        rank: 1,
+                        rank: 3,
                         date: new Date().toLocaleString()
                     }];
                     Cookies.set('notebookNotes', this.notes)
